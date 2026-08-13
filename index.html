@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ma super app de révision</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Mes Flashcards</h1>
+
+    <!-- Le compteur de cartes -->
+    <p id="compteur">Carte 1 / 3</p>
+
+    <!-- La carte -->
+    <div class="carte">
+        <p class="question">Question 1 test</p>
+        <p class="reponse">Reponse 1 test</p>
+    </div>
+
+    <!-- Bouton pour la réponse -->
+    <button id="btn-reponse">Afficher la réponse</button>
+
+    <!-- Navigation avec les identifiants indispensables (id) -->
+    <div class="navigation">
+        <button id="btn-precedents">Précédent</button>
+        <button id="btn-melanger">Mélanger</button>
+        <button id="btn-suivant">Suivant</button>
+    </div>
+        <!-- Formulaire pour ajouter une carte -->
+    <div class="formulaire">
+        <h3>Ajouter une nouvelle carte</h3>
+        <input type="text" id="nouvelle-question" placeholder="Question (ex: Capitale de l'Espagne ?)">
+        <input type="text" id="nouvelle-reponse" placeholder="Réponse (ex: Madrid)">
+        <button id="btn-ajouter">Ajouter la carte</button>
+    </div>
+
+
+    <!-- Le script chargé TOUT EN BAS -->
+    <script src="script.js"></script>
+
+</body>
+</html>
