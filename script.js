@@ -1,16 +1,11 @@
-// 1. On charge les cartes sauvegardées, ou on met des cartes par défaut si c'est la première visite
-let cartes =  JSON.parse(localStorage.getItem('mesFlashcards')) || [
+// 1. Charger les cartes sauvegardées ou utiliser les cartes par défaut
+let cartes = JSON.parse(localStorage.getItem('mesFlashcards')) || [
     { question: "Quelle est la capitale de la France ?", reponse: "Paris" },
     { question: "Combien font 7 x 8 ?", reponse: "56" },
     { question: "En quelle année a eu lieu la Révolution française ?", reponse: "1789" },
     { question: "Quel est le symbole chimique de l'eau ?", reponse: "H2O" },
     { question: "Qui a peint la Joconde ?", reponse: "Léonard de Vinci" }
 ];
-
-// Fonction pour sauvegarder le tableau dans le navigateur
-function sauvegarderCartes() {
-    localStorage.setItem('mesFlashcards', JSON.stringify(cartes));
-}
 
 let indexActuel = 0;
 
@@ -23,7 +18,40 @@ const btnSuivant = document.getElementById('btn-suivant');
 const btnPrecedent = document.getElementById('btn-precedents');
 const btnMelanger = document.getElementById('btn-melanger');
 
-// 3. Fonction pour afficher la carte courante + le compteur
+const inputQuestion = document.getElementById('nouvelle-question');
+const inputReponse = document.getElementById('nouvelle-reponse');
+const btnAjouter = document.getElementById('btn-ajouter');
+
+// Sélection du bouton de suppression
+const btnSupprimer = document.getElementById('btn-supprimer');
+
+// Événement de suppression
+btnSupprimer.addEventListener('click', () => {
+    // Si le paquet est déjà vide, on ne fait rien
+    if (cartes.length === 0) return;
+
+    // 1. Retire la carte courante du tableau
+    cartes.splice(indexActuel, 1);
+
+    // 2. Sauvegarde la nouvelle liste
+    sauvegarderCartes();
+
+    // 3. Ajuste l'index si on a supprimé la dernière carte
+    if (indexActuel >= cartes.length) {
+        indexActuel = Math.max(0, cartes.length - 1);
+    }
+
+    // 4. Réaffiche la page avec la carte restante
+    afficherCarte();
+});
+
+
+// 3. Fonction de sauvegarde
+function sauvegarderCartes() {
+    localStorage.setItem('mesFlashcards', JSON.stringify(cartes));
+}
+
+// 4. Fonction d'affichage
 function afficherCarte() {
     if (cartes.length === 0) {
         questionEl.textContent = "Aucune carte disponible.";
@@ -34,16 +62,13 @@ function afficherCarte() {
 
     questionEl.textContent = cartes[indexActuel].question;
     reponseEl.textContent = cartes[indexActuel].reponse;
-    
-    // Mise à jour du compteur (indexActuel + 1 car l'index commence à 0)
     compteurEl.textContent = `Carte ${indexActuel + 1} / ${cartes.length}`;
     
-    // Cacher la réponse à chaque changement
     reponseEl.style.display = 'none';
     btnReponse.textContent = 'Afficher la réponse';
 }
 
-// 4. Afficher/Masquer la réponse
+// 5. Événements
 btnReponse.addEventListener('click', () => {
     if (reponseEl.style.display === 'block') {
         reponseEl.style.display = 'none';
@@ -54,59 +79,48 @@ btnReponse.addEventListener('click', () => {
     }
 });
 
-// 5. Suivant
 btnSuivant.addEventListener('click', () => {
     indexActuel = (indexActuel + 1) % cartes.length;
     afficherCarte();
 });
 
-// 6. Précédent
 btnPrecedent.addEventListener('click', () => {
     indexActuel = (indexActuel - 1 + cartes.length) % cartes.length;
     afficherCarte();
 });
 
-// 7. Mélanger les cartes (Algorithme de Fisher-Yates)
 btnMelanger.addEventListener('click', () => {
     for (let i = cartes.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [cartes[i], cartes[j]] = [cartes[j], cartes[i]];
     }
-    indexActuel = 0; // On revient à la première carte du nouveau paquet mélangé
+    indexActuel = 0;
     afficherCarte();
 });
 
-// Initialisation
-afficherCarte();
-
-// 8. Gestion du formulaire d'ajout
-const inputQuestion = document.getElementById('nouvelle-question');
-const inputReponse = document.getElementById('nouvelle-reponse');
-const btnAjouter = document.getElementById('btn-ajouter');
-
+// 6. Ajout d'une carte + Sauvegarde
 btnAjouter.addEventListener('click', () => {
     const questionTexte = inputQuestion.value.trim();
     const reponseTexte = inputReponse.value.trim();
 
-    // On vérifie que les deux champs sont bien remplis
     if (questionTexte === '' || reponseTexte === '') {
         alert('Merci de remplir la question et la réponse !');
         return;
     }
 
-    // On ajoute la nouvelle carte dans le tableau
     cartes.push({
         question: questionTexte,
         reponse: reponseTexte
     });
- //SAUVEGARDE DANS LE NAVIGATEUR
- sauvegarderCartes();
-    // On vide les champs de texte
+
+    sauvegarderCartes(); // Enregistrement dans le navigateur
+
     inputQuestion.value = '';
     inputReponse.value = '';
 
-    // On se positionne sur la carte qu'on vient de créer et on l'affiche
     indexActuel = cartes.length - 1;
     afficherCarte();
 });
 
+// Initialisation
+afficherCarte();
