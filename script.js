@@ -1,11 +1,16 @@
-// 1. Banque de cartes
-let cartes = [
+// 1. On charge les cartes sauvegardées, ou on met des cartes par défaut si c'est la première visite
+let cartes =  JSON.parse(localStorage.getItem('mesFlashcards')) || [
     { question: "Quelle est la capitale de la France ?", reponse: "Paris" },
     { question: "Combien font 7 x 8 ?", reponse: "56" },
     { question: "En quelle année a eu lieu la Révolution française ?", reponse: "1789" },
     { question: "Quel est le symbole chimique de l'eau ?", reponse: "H2O" },
     { question: "Qui a peint la Joconde ?", reponse: "Léonard de Vinci" }
 ];
+
+// Fonction pour sauvegarder le tableau dans le navigateur
+function sauvegarderCartes() {
+    localStorage.setItem('mesFlashcards', JSON.stringify(cartes));
+}
 
 let indexActuel = 0;
 
@@ -94,7 +99,8 @@ btnAjouter.addEventListener('click', () => {
         question: questionTexte,
         reponse: reponseTexte
     });
-
+ //SAUVEGARDE DANS LE NAVIGATEUR
+ sauvegarderCartes();
     // On vide les champs de texte
     inputQuestion.value = '';
     inputReponse.value = '';
