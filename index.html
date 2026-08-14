@@ -2,42 +2,61 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ma super app de révision</title>
+    <!-- Police moderne Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>Mes Flashcards</h1>
+    <div class="app-container">
+        <h1>Mes Flashcards</h1>
 
-    <!-- Compteur -->
-    <p id="compteur">Carte 1 / 3</p>
+        <!-- Compteur -->
+        <p id="compteur">Carte 1 / 3</p>
 
-    <!-- La carte -->
-    <div class="carte">
-        <p class="question">Chargement...</p>
-        <p class="reponse">Chargement...</p>
+        <!-- Container de la carte 3D -->
+        <div class="carte-container">
+            <div class="carte" id="carte">
+                <!-- Face Recto (Question) -->
+                <div class="carte-face carte-recto">
+                    <span class="badge">Question</span>
+                    <p class="question">Chargement...</p>
+                    <span class="hint">🔄 Clique sur la carte pour retourner</span>
+                </div>
+                <!-- Face Verso (Réponse) -->
+                <div class="carte-face carte-verso">
+                    <span class="badge badge-reponse">Réponse</span>
+                    <p class="reponse">Chargement...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Boutons d'action carte -->
+        <div class="actions-carte">
+            <button id="btn-reponse" class="btn btn-primaire">🔄 Retourner la carte</button>
+            <button id="btn-supprimer" class="btn btn-danger">🗑️ Supprimer</button>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button id="btn-precedents" class="btn btn-secondaire">⬅️ Précédent</button>
+            <button id="btn-melanger" class="btn btn-secondaire">🔀 Mélanger</button>
+            <button id="btn-suivant" class="btn btn-secondaire">Suivant ➡️</button>
+        </div>
+
+        <!-- Formulaire d'ajout -->
+        <div class="formulaire">
+            <h3>Ajouter une carte</h3>
+            <input type="text" id="nouvelle-question" placeholder="Question (ex: Capitale de l'Espagne ?)">
+            <input type="text" id="nouvelle-reponse" placeholder="Réponse (ex: Madrid)">
+            <button id="btn-ajouter" class="btn btn-succes">➕ Ajouter au paquet</button>
+        </div>
     </div>
 
-    <!-- Boutons liés à la carte courante -->
-    <button id="btn-reponse">Afficher la réponse</button>
-    <button id="btn-supprimer">🗑️ Supprimer cette carte</button>
-
-    <!-- Zone de navigation -->
-    <div class="navigation">
-        <button id="btn-precedents">Précédent</button>
-        <button id="btn-melanger">🔀 Mélanger</button>
-        <button id="btn-suivant">Suivant</button>
-    </div>
-
-    <!-- Formulaire d'ajout -->
-    <div class="formulaire">
-        <h3>Ajouter une nouvelle carte</h3>
-        <input type="text" id="nouvelle-question" placeholder="Question (ex: Capitale de l'Espagne ?)">
-        <input type="text" id="nouvelle-reponse" placeholder="Réponse (ex: Madrid)">
-        <button id="btn-ajouter">Ajouter la carte</button>
-    </div>
-
-    <!-- Le script chargé à la toute fin -->
     <script src="script.js"></script>
 
 </body>

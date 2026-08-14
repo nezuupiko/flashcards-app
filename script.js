@@ -1,13 +1,16 @@
-// 1. Charger les cartes depuis le localStorage ou mettre les cartes par défaut
+// 1. Données
 let cartes = JSON.parse(localStorage.getItem('mesFlashcards')) || [
     { question: "Quelle est la capitale de la France ?", reponse: "Paris" },
     { question: "Combien font 7 x 8 ?", reponse: "56" },
-    { question: "En quelle année a eu lieu la Révolution française ?", reponse: "1789" }
+    { question: "En quelle année a eu lieu la Révolution française ?", reponse: "1789" },
+    { question: "Quel est le symbole chimique de l'eau ?", reponse: "H2O" },
+    { question: "Qui a peint la Joconde ?", reponse: "Léonard de Vinci" }
 ];
 
 let indexActuel = 0;
 
-// 2. Sélection de tous les éléments HTML
+// 2. Éléments HTML
+const carteEl = document.getElementById('carte');
 const questionEl = document.querySelector('.question');
 const reponseEl = document.querySelector('.reponse');
 const compteurEl = document.getElementById('compteur');
@@ -22,13 +25,20 @@ const inputQuestion = document.getElementById('nouvelle-question');
 const inputReponse = document.getElementById('nouvelle-reponse');
 const btnAjouter = document.getElementById('btn-ajouter');
 
-// 3. Sauvegarder dans le navigateur
+// Sauvegarde LocalStorage
 function sauvegarderCartes() {
     localStorage.setItem('mesFlashcards', JSON.stringify(cartes));
 }
 
-// 4. Fonction d'affichage de la carte actuelle
+// Remet la carte sur la face question (désactive le flip 3D)
+function reinitialiserFlip() {
+    carteEl.classList.remove('retournee');
+}
+
+// Affichage
 function afficherCarte() {
+    reinitialiserFlip();
+
     if (cartes.length === 0) {
         questionEl.textContent = "Aucune carte disponible.";
         reponseEl.textContent = "";
@@ -39,23 +49,24 @@ function afficherCarte() {
     questionEl.textContent = cartes[indexActuel].question;
     reponseEl.textContent = cartes[indexActuel].reponse;
     compteurEl.textContent = `Carte ${indexActuel + 1} / ${cartes.length}`;
-    
-    reponseEl.style.display = 'none';
-    btnReponse.textContent = 'Afficher la réponse';
 }
 
-// 5. Afficher / Masquer la réponse
-btnReponse.addEventListener('click', () => {
-    if (reponseEl.style.display === 'block') {
-        reponseEl.style.display = 'none';
-        btnReponse.textContent = 'Afficher la réponse';
-    } else {
-        reponseEl.style.display = 'block';
-        btnReponse.textContent = 'Masquer la réponse';
-    }
+// Basculer la carte (Flip 3D)
+function basculerCarte() {
+    if (cartes.length === 0) return;
+    carteEl.classList.toggle('retournee');
+}
+
+// Clic sur la carte elle-même
+carteEl.addEventListener('click', basculerCarte);
+
+// Clic sur le bouton Retourner
+btnReponse.addEventListener('click', (e) => {
+    e.stopPropagation(); // Évite un double clic avec l'événement carteEl
+    basculerCarte();
 });
 
-// 6. Navigation
+// Navigation
 btnSuivant.addEventListener('click', () => {
     if (cartes.length === 0) return;
     indexActuel = (indexActuel + 1) % cartes.length;
@@ -78,12 +89,12 @@ btnMelanger.addEventListener('click', () => {
     afficherCarte();
 });
 
-// 7. Supprimer la carte courante
+// Supprimer
 btnSupprimer.addEventListener('click', () => {
     if (cartes.length === 0) return;
 
-    cartes.splice(indexActuel, 1); // Supprime la carte du tableau
-    sauvegarderCartes();           // Sauvegarde le changement
+    cartes.splice(indexActuel, 1);
+    sauvegarderCartes();
 
     if (indexActuel >= cartes.length) {
         indexActuel = Math.max(0, cartes.length - 1);
@@ -92,7 +103,7 @@ btnSupprimer.addEventListener('click', () => {
     afficherCarte();
 });
 
-// 8. Ajouter une nouvelle carte
+// Ajouter
 btnAjouter.addEventListener('click', () => {
     const questionTexte = inputQuestion.value.trim();
     const reponseTexte = inputReponse.value.trim();
@@ -116,5 +127,5 @@ btnAjouter.addEventListener('click', () => {
     afficherCarte();
 });
 
-// Initialisation au chargement de la page
+// Initialisation
 afficherCarte();
