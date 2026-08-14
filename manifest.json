@@ -1,0 +1,15 @@
+{
+  "short_name": "Flashcards",
+  "name": "Mes Flashcards de Révision",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3389/3389081.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#ffffff",
+  "theme_color": "#4299e1",
+  "display": "standalone"
+}
