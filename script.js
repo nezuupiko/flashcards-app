@@ -127,5 +127,22 @@ btnAjouter.addEventListener('click', () => {
     afficherCarte();
 });
 
+// --- DÉGRADÉS ALÉATOIRES ANIMÉS ---
+const degrades = [
+    'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)', // Vibrant Sunset
+    'linear-gradient(-45deg, #f5f7fa, #c3cfe2, #e0c3fc, #8ec5fc)', // Soft Pastel
+    'linear-gradient(-45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb)', // Bubblegum
+    'linear-gradient(-45deg, #84ffc9, #aab2ff, #eca0ff, #f99f9f)', // Neon Dream
+    'linear-gradient(-45deg, #fbc2eb, #a6c1ee, #84fab0, #8fd3f4)', // Aurora
+    'linear-gradient(-45deg, #2af598, #009efd, #00c6ff, #0072ff)'  // Ocean Blue
+];
+
+// Sélectionne un dégradé au hasard dans la liste
+const degradeAleatoire = degrades[Math.floor(Math.random() * degrades.length)];
+
+// Applique le dégradé au background du body
+document.body.style.background = degradeAleatoire;
+document.body.style.backgroundSize = '300% 300%';
+
 // Initialisation
 afficherCarte();

@@ -7,7 +7,12 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #84fab0 0%, #8fd4f4 100%);
+    /* Dégradé par défaut */
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    /* On agrandit l'arrière-plan pour pouvoir le faire bouger */
+    background-size: 300% 300%;
+    /* Animation fluide qui tourne en boucle infinie (15 secondes) */
+    animation: animerBackground 15s ease infinite;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -15,6 +20,20 @@ body {
     padding: 20px;
     color: #2d3748;
 }
+
+/* L'animation qui fait glisser le dégradé */
+@keyframes animerBackground {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 
 .app-container {
     width: 100%;
