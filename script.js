@@ -100,7 +100,7 @@ function changerDeCarte(nouvelIndex) {
             indexActuel = nouvelIndex;
             afficherCarte();
             reponseEl.style.opacity = '1'; // On réaffiche le texte proprement
-        }, 300);
+        }, 215);
     } else {
         indexActuel = nouvelIndex;
         afficherCarte();
