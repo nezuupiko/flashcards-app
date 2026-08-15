@@ -1,3 +1,4 @@
+alert("Nouveau script chargé !");
 // 1. Données des cartes
 let toutesLesCartes = JSON.parse(localStorage.getItem('mesFlashcards')) || [
     { matiere: "Géographie", question: "Quelle est la capitale de la France ?", reponse: "Paris" },
