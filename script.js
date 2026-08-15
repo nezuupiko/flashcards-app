@@ -89,17 +89,24 @@ function changerDeCarte(nouvelIndex) {
     if (cartesFiltrees.length === 0) return;
 
     if (carteEl.classList.contains('retournee')) {
+        // 1. On efface la réponse INSTANTANÉMENT pour qu'elle soit invisible pendant le flip
+        reponseEl.style.opacity = '0';
+        
+        // 2. On lance le retournement
         reinitialiserFlip();
-        // Changement du texte pendant que la carte est tournée sur la tranche
+
+        // 3. Une fois la carte remise à plat, on met à jour les données et on réaffiche le texte
         setTimeout(() => {
             indexActuel = nouvelIndex;
             afficherCarte();
-        }, 215);
+            reponseEl.style.opacity = '1'; // On réaffiche le texte proprement
+        }, 300);
     } else {
         indexActuel = nouvelIndex;
         afficherCarte();
     }
 }
+
 
 function basculerCarte() {
     if (cartesFiltrees.length === 0) return;
