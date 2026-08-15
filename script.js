@@ -94,7 +94,7 @@ function changerDeCarte(nouvelIndex) {
         setTimeout(() => {
             indexActuel = nouvelIndex;
             afficherCarte();
-        }, 250);
+        }, 215);
     } else {
         indexActuel = nouvelIndex;
         afficherCarte();
