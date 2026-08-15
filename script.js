@@ -1,4 +1,3 @@
-alert("Nouveau script chargé !");
 // 1. Données des cartes
 let toutesLesCartes = JSON.parse(localStorage.getItem('mesFlashcards')) || [
     { matiere: "Géographie", question: "Quelle est la capitale de la France ?", reponse: "Paris" },
@@ -90,18 +89,18 @@ function changerDeCarte(nouvelIndex) {
     if (cartesFiltrees.length === 0) return;
 
     if (carteEl.classList.contains('retournee')) {
-        // 1. On efface la réponse INSTANTANÉMENT pour qu'elle soit invisible pendant le flip
-        reponseEl.style.opacity = '0';
+        // 1. On VIDE le texte de la réponse immédiatement (iOS n'a plus rien à afficher)
+        reponseEl.textContent = "";
         
-        // 2. On lance le retournement
+        // 2. On lance la rotation de retour vers le recto
         reinitialiserFlip();
 
-        // 3. Une fois la carte remise à plat, on met à jour les données et on réaffiche le texte
+        // 3. Après le délai (ex: 200ms), on met à jour les données
         setTimeout(() => {
             indexActuel = nouvelIndex;
-            afficherCarte();
-            reponseEl.style.opacity = '1'; // On réaffiche le texte proprement
-        }, 215);
+            afficherCarte(); // Cette fonction remet la question ET la nouvelle réponse
+        }, 200); // 👈 Tu peux régler ce délai ici (200ms = 0.2s)
+        
     } else {
         indexActuel = nouvelIndex;
         afficherCarte();
