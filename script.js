@@ -89,19 +89,18 @@ function changerDeCarte(nouvelIndex) {
     if (cartesFiltrees.length === 0) return;
 
     if (carteEl.classList.contains('retournee')) {
-        // 1. On VIDE le texte de la réponse immédiatement (iOS n'a plus rien à afficher)
-        reponseEl.textContent = "";
-        
-        // 2. On lance la rotation de retour vers le recto
+        // 1. On lance le retournement de la carte
         reinitialiserFlip();
 
-        // 3. Après le délai (ex: 200ms), on met à jour les données
+        // 2. Pile au moment où la carte est sur la tranche (à mi-chemin)
+        // On change le contenu discretement : la question ET la réponse changent dans le noir !
         setTimeout(() => {
             indexActuel = nouvelIndex;
-            afficherCarte(); // Cette fonction remet la question ET la nouvelle réponse
-        }, 200); // 👈 Tu peux régler ce délai ici (200ms = 0.2s)
+            afficherCarte();
+        }, 150); // 👈 Ajuste ce chiffre selon la vitesse de ton animation CSS
         
     } else {
+        // Si elle était déjà du côté question, changement instantané
         indexActuel = nouvelIndex;
         afficherCarte();
     }
