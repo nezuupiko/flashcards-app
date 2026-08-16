@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ma super app de révision</title>
     <link rel="manifest" href="manifest.json">
-    <!-- Icône pour l'écran d'accueil sur iPhone / iPad -->
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,15 +14,6 @@
 </head>
 
 <body>
-
-    <!-- Indicateur et barre de progression -->
-    <div class="progress-container">
-        <span id="compteur-cartes">0 / 0</span>
-        <div class="barre-fond">
-            <div id="barre-progression" class="barre-remplissage"></div>
-        </div>
-    </div>
-
 
     <div class="app-container">
         <h1>Mes Flashcards</h1>
@@ -34,6 +24,14 @@
             <select id="filtre-matiere">
                 <option value="Toutes">Toutes les matières</option>
             </select>
+        </div>
+
+        <!-- Indicateur et barre de progression -->
+        <div class="progress-container">
+            <span id="compteur-cartes">0 / 0</span>
+            <div class="barre-fond">
+                <div id="barre-progression" class="barre-remplissage"></div>
+            </div>
         </div>
 
         <!-- Carte 3D -->
@@ -51,7 +49,7 @@
             </div>
         </div>
 
-        <!-- Boutons -->
+        <!-- Boutons de contrôle -->
         <div class="actions-carte">
             <button id="btn-reponse" class="btn btn-primaire">🔄 Retourner</button>
             <button id="btn-supprimer" class="btn btn-danger">🗑️ Supprimer</button>
@@ -63,17 +61,17 @@
             <button id="btn-suivant" class="btn btn-secondaire">Suivant ➡️</button>
         </div>
 
-        <!-- Formulaires centrés en bas de la page -->
+        <!-- Formulaires séparés en bas -->
         <section class="formulaires-container">
 
-            <!-- Formulaire 1 : Matière -->
+            <!-- Formulaire 1 : Créer une Matière -->
             <form id="form-matiere" class="form-box">
                 <h3>Nouvelle Matière</h3>
-                <input type="text" id="nom-nouvelle-matiere" placeholder="Nom de la matière" required>
-                <button type="submit">Créer la matière</button>
+                <input type="text" id="nom-nouvelle-matiere" placeholder="Nom de la matière (ex: Anglais)" required>
+                <button type="submit" class="btn btn-primaire">Créer la matière</button>
             </form>
 
-            <!-- Formulaire 2 : Carte -->
+            <!-- Formulaire 2 : Créer une Carte -->
             <form id="form-carte" class="form-box">
                 <h3>Nouvelle Carte</h3>
                 <select id="select-matiere-carte" required>
@@ -81,22 +79,13 @@
                 </select>
                 <input type="text" id="question-carte" placeholder="Question" required>
                 <input type="text" id="reponse-carte" placeholder="Réponse" required>
-                <button type="submit">Ajouter la carte</button>
+                <button type="submit" class="btn btn-succes">➕ Ajouter la carte</button>
             </form>
 
         </section>
-
-        <!-- Formulaire d'ajout avec matière -->
-        <div class="formulaire">
-            <h3>Ajouter une carte</h3>
-            <input type="text" id="nouvelle-matiere" placeholder="Matière (ex: Maths, Histoire, Anglais...)">
-            <input type="text" id="nouvelle-question" placeholder="Question">
-            <input type="text" id="nouvelle-reponse" placeholder="Réponse">
-            <button id="btn-ajouter" class="btn btn-succes">➕ Ajouter au paquet</button>
-        </div>
     </div>
 
-    <script src="script.js?v=2"></script>
+    <script src="script.js?v=3"></script>
 
 </body>
 

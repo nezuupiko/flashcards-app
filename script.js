@@ -14,7 +14,6 @@ let indexActuel = 0;
 const carteEl = document.getElementById('carte');
 const questionEl = document.querySelector('.question');
 const reponseEl = document.querySelector('.reponse');
-const compteurEl = document.getElementById('compteur');
 const badgeMatiere = document.getElementById('badge-matiere');
 const filtreMatiere = document.getElementById('filtre-matiere');
 
@@ -24,10 +23,13 @@ const btnSuivant = document.getElementById('btn-suivant');
 const btnPrecedent = document.getElementById('btn-precedents');
 const btnMelanger = document.getElementById('btn-melanger');
 
-const inputMatiere = document.getElementById('nouvelle-matiere');
-const inputQuestion = document.getElementById('nouvelle-question');
-const inputReponse = document.getElementById('nouvelle-reponse');
-const btnAjouter = document.getElementById('btn-ajouter');
+const formMatiere = document.getElementById('form-matiere');
+const inputNomMatiere = document.getElementById('nom-nouvelle-matiere');
+
+const formCarte = document.getElementById('form-carte');
+const selectMatiereCarte = document.getElementById('select-matiere-carte');
+const inputQuestionCarte = document.getElementById('question-carte');
+const inputReponseCarte = document.getElementById('reponse-carte');
 
 // 3. Sauvegarde LocalStorage
 function sauvegarderCartes() {
@@ -37,8 +39,9 @@ function sauvegarderCartes() {
 // 4. Gestion des matières
 function mettreAJourMenuMatieres() {
     const matieres = ["Toutes", ...new Set(toutesLesCartes.map(c => c.matiere || "Général"))];
-    const valeurActuelle = filtreMatiere.value;
-    
+    const valeurFiltreActuel = filtreMatiere.value;
+
+    // Mise à jour du filtre principal
     filtreMatiere.innerHTML = "";
     matieres.forEach(m => {
         const option = document.createElement('option');
@@ -47,9 +50,18 @@ function mettreAJourMenuMatieres() {
         filtreMatiere.appendChild(option);
     });
 
-    if (matieres.includes(valeurActuelle)) {
-        filtreMatiere.value = valeurActuelle;
+    if (matieres.includes(valeurFiltreActuel)) {
+        filtreMatiere.value = valeurFiltreActuel;
     }
+
+    // Mise à jour du selecteur dans le formulaire de carte
+    selectMatiereCarte.innerHTML = '<option value="">-- Choisir une matière --</option>';
+    matieres.filter(m => m !== "Toutes").forEach(m => {
+        const option = document.createElement('option');
+        option.value = m;
+        option.textContent = m;
+        selectMatiereCarte.appendChild(option);
+    });
 }
 
 function filtrerCartes() {
@@ -63,7 +75,7 @@ function filtrerCartes() {
     afficherCarte();
 }
 
-// 5. Affichage et animations
+// 5. Affichage et progression
 function reinitialiserFlip() {
     carteEl.classList.remove('retournee');
 }
@@ -73,7 +85,6 @@ function afficherCarte() {
         badgeMatiere.textContent = "Vide";
         questionEl.textContent = "Aucune carte dans cette matière.";
         reponseEl.textContent = "";
-        compteurEl.textContent = "0 / 0";
         mettreAJourProgression();
         return;
     }
@@ -82,7 +93,6 @@ function afficherCarte() {
     badgeMatiere.textContent = carte.matiere || "Général";
     questionEl.textContent = carte.question;
     reponseEl.textContent = carte.reponse;
-    compteurEl.textContent = `Carte ${indexActuel + 1} / ${cartesFiltrees.length}`;
     mettreAJourProgression();
 }
 
@@ -104,35 +114,27 @@ function mettreAJourProgression() {
     if (barreEl) barreEl.style.width = `${pourcentage}%`;
 }
 
-// Changement fluide sans aperçu de la réponse suivante
 function changerDeCarte(nouvelIndex) {
     if (cartesFiltrees.length === 0) return;
 
     if (carteEl.classList.contains('retournee')) {
-        // 1. On lance le retournement de la carte
         reinitialiserFlip();
-
-        // 2. Pile au moment où la carte est sur la tranche (à mi-chemin)
-        // On change le contenu discretement : la question ET la réponse changent dans le noir !
         setTimeout(() => {
             indexActuel = nouvelIndex;
             afficherCarte();
-        }, 175); // 👈 Ajuste ce chiffre selon la vitesse de ton animation CSS
-        
+        }, 175);
     } else {
-        // Si elle était déjà du côté question, changement instantané
         indexActuel = nouvelIndex;
         afficherCarte();
     }
 }
-
 
 function basculerCarte() {
     if (cartesFiltrees.length === 0) return;
     carteEl.classList.toggle('retournee');
 }
 
-// 6. Événements
+// 6. Événements des boutons
 carteEl.addEventListener('click', basculerCarte);
 
 btnReponse.addEventListener('click', (e) => {
@@ -166,44 +168,61 @@ btnSupprimer.addEventListener('click', () => {
 
     const carteASupprimer = cartesFiltrees[indexActuel];
     toutesLesCartes = toutesLesCartes.filter(c => c !== carteASupprimer);
-    
-    sauvegarderCartes();
-    mettreAJourMenuMatieres();
-    filtrerCartes();
-});
-
-btnAjouter.addEventListener('click', () => {
-    const matiereTexte = inputMatiere.value.trim() || "Général";
-    const questionTexte = inputQuestion.value.trim();
-    const reponseTexte = inputReponse.value.trim();
-
-    if (questionTexte === '' || reponseTexte === '') {
-        alert('Merci de remplir la question et la réponse !');
-        return;
-    }
-
-    toutesLesCartes.push({
-        matiere: matiereTexte,
-        question: questionTexte,
-        reponse: reponseTexte
-    });
 
     sauvegarderCartes();
     mettreAJourMenuMatieres();
-    filtreMatiere.value = matiereTexte;
     filtrerCartes();
-
-    inputMatiere.value = '';
-    inputQuestion.value = '';
-    inputReponse.value = '';
-    
-    indexActuel = cartesFiltrees.length - 1;
-    afficherCarte();
 });
 
 filtreMatiere.addEventListener('change', filtrerCartes);
 
-// 7. Background animé aléatoire
+// 7. Formulaires d'ajout
+
+// Formulaire 1 : Matière
+formMatiere.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nouvelleMatiere = inputNomMatiere.value.trim();
+
+    if (nouvelleMatiere) {
+        // Ajouter une option temporaire dans le select
+        const option = document.createElement('option');
+        option.value = nouvelleMatiere;
+        option.textContent = nouvelleMatiere;
+        selectMatiereCarte.appendChild(option);
+        selectMatiereCarte.value = nouvelleMatiere;
+
+        inputNomMatiere.value = '';
+    }
+});
+
+// Formulaire 2 : Carte
+formCarte.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const matiere = selectMatiereCarte.value;
+    const question = inputQuestionCarte.value.trim();
+    const reponse = inputReponseCarte.value.trim();
+
+    if (!matiere) {
+        alert("Merci de sélectionner une matière !");
+        return;
+    }
+
+    toutesLesCartes.push({ matiere, question, reponse });
+
+    sauvegarderCartes();
+    mettreAJourMenuMatieres();
+    filtreMatiere.value = matiere;
+    filtrerCartes();
+
+    inputQuestionCarte.value = '';
+    inputReponseCarte.value = '';
+
+    indexActuel = cartesFiltrees.length - 1;
+    afficherCarte();
+});
+
+// 8. Background animé aléatoire
 const degrades = [
     'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
     'linear-gradient(-45deg, #f5f7fa, #c3cfe2, #e0c3fc, #8ec5fc)',
@@ -217,43 +236,23 @@ document.body.style.backgroundSize = '300% 300%';
 mettreAJourMenuMatieres();
 filtrerCartes();
 
-// Contrôles au clavier
+// 9. Contrôles au clavier (Correction du double saut)
 document.addEventListener('keydown', (e) => {
-    // Si l'utilisateur tape dans une zone de texte, on n'active pas les raccourcis
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-
-    if (e.code === 'Space') {
-        e.preventDefault(); // Évite de faire défiler la page vers le bas
-        carteEl.click(); // Simule un clic sur la carte pour la retourner
-    } else if (e.code === 'ArrowRight') {
-        if (btnSuivant) btnSuivant.click();
-    } else if (e.code === 'ArrowLeft') {
-        if (btnPrecedent) btnPrecedent.click();
-    }
-});
-
-
-// Contrôles au clavier
-// Contrôles au clavier corrigés
-document.addEventListener('keydown', (e) => {
-    // Ne rien faire si l'utilisateur écrit dans un champ texte
     if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
 
     if (e.code === 'Space') {
-        e.preventDefault(); // Bloque le défilement de la page
-        // Retourne la carte
-        carteEl.classList.toggle('retournee');
+        e.preventDefault();
+        basculerCarte();
     } else if (e.code === 'ArrowRight') {
-        e.preventDefault(); // Empêche le double saut
+        e.preventDefault();
         if (btnSuivant) btnSuivant.click();
     } else if (e.code === 'ArrowLeft') {
-        e.preventDefault(); // Empêche le double saut
+        e.preventDefault();
         if (btnPrecedent) btnPrecedent.click();
     }
 });
 
-
-// Gestes SWIPE mobile
+// 10. Gestes SWIPE mobile
 let touchStartX = 0;
 let touchEndX = 0;
 
@@ -263,7 +262,6 @@ carteEl.addEventListener('touchstart', (e) => {
 
 carteEl.addEventListener('touchend', (e) => {
     touchEndX = e.changedTouches[0].screenX;
-    
     const seuil = 50;
     const difference = touchStartX - touchEndX;
 
@@ -273,25 +271,3 @@ carteEl.addEventListener('touchend', (e) => {
         if (btnPrecedent) btnPrecedent.click();
     }
 }, { passive: true });
-
-const formMatiere = document.getElementById('form-matiere');
-const inputMatiere = document.getElementById('nom-nouvelle-matiere');
-const selectMatiere = document.getElementById('select-matiere-carte');
-
-formMatiere.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const nomMatiere = inputMatiere.value.trim();
-    
-    if (nomMatiere) {
-        // Ajouter la nouvelle option dans le select
-        const option = document.createElement('option');
-        option.value = nomMatiere;
-        option.textContent = nomMatiere;
-        selectMatiere.appendChild(option);
-        
-        // Sélectionner directement la nouvelle matière créée
-        selectMatiere.value = nomMatiere;
-        inputMatiere.value = '';
-    }
-});
-

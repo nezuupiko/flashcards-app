@@ -4,16 +4,12 @@
     margin: 0;
     padding: 0;
     touch-action: manipulation;
-    /* Désactive le double-tap zoom */
 }
 
 body {
     font-family: 'Poppins', sans-serif;
-    /* Dégradé par défaut */
     background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-    /* On agrandit l'arrière-plan pour pouvoir le faire bouger */
     background-size: 300% 300%;
-    /* Animation fluide qui tourne en boucle infinie (15 secondes) */
     animation: animerBackground 15s ease infinite;
     min-height: 100vh;
     display: flex;
@@ -23,21 +19,11 @@ body {
     color: #2d3748;
 }
 
-/* L'animation qui fait glisser le dégradé */
 @keyframes animerBackground {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
-
-    100% {
-        background-position: 0% 50%;
-    }
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
-
 
 .app-container {
     width: 100%;
@@ -51,14 +37,38 @@ h1 {
     font-size: 1.8rem;
     font-weight: 700;
     color: #1a202c;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
-#compteur {
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: #718096;
+/* Barre de progression centrée */
+.progress-container {
+    width: 100%;
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#compteur-cartes {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #4a5568;
+    margin-bottom: 6px;
+}
+
+.barre-fond {
+    width: 100%;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.barre-remplissage {
+    height: 100%;
+    width: 0%;
+    background-color: #48bb78;
+    transition: width 0.3s ease;
 }
 
 /* --- STRUCTURE CARTE 3D --- */
@@ -66,7 +76,6 @@ h1 {
     width: 100%;
     height: 240px;
     perspective: 1000px;
-    /* Donne l'effet de profondeur 3D */
     margin-bottom: 20px;
 }
 
@@ -80,7 +89,6 @@ h1 {
     cursor: pointer;
 }
 
-/* Classe déclenchée en JS pour faire pivoter la carte */
 .carte.retournee {
     transform: rotateY(180deg);
 }
@@ -90,7 +98,6 @@ h1 {
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
-    /* Cache le dos de la face inclinée */
     -webkit-backface-visibility: hidden;
     border-radius: 20px;
     padding: 25px;
@@ -106,7 +113,6 @@ h1 {
 
 .carte-verso {
     transform: rotateY(180deg);
-    /* La réponse est pré-pivotée */
     -webkit-transform: rotateY(180deg);
     background: #f8fafc;
 }
@@ -171,64 +177,55 @@ h1 {
     transform: translateY(0);
 }
 
-.btn-primaire {
-    background: #4299e1;
-    color: white;
-}
+.btn-primaire { background: #4299e1; color: white; }
+.btn-secondaire { background: #ffffff; color: #4a5568; }
+.btn-danger { background: #fed7d7; color: #c53030; flex: 0.6; }
+.btn-succes { background: #48bb78; color: white; width: 100%; }
 
-.btn-secondaire {
-    background: #ffffff;
-    color: #4a5568;
-}
-
-.btn-danger {
-    background: #fed7d7;
-    color: #c53030;
-    flex: 0.6;
-}
-
-.btn-succes {
-    background: #48bb78;
-    color: white;
+/* --- FORMULAIRES --- */
+.formulaires-container {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
 }
 
-/* --- FORMULAIRE --- */
-.formulaire {
-    width: 100%;
+.form-box {
     background: white;
     padding: 20px;
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.formulaire h3 {
+.form-box h3 {
     font-size: 1rem;
-    margin-bottom: 12px;
     color: #4a5568;
 }
 
-.formulaire input {
+.form-box input,
+.form-box select {
     width: 100%;
     padding: 12px;
-    margin-bottom: 10px;
     border: 1px solid #e2e8f0;
     border-radius: 10px;
     font-family: 'Poppins', sans-serif;
     font-size: 0.9rem;
     outline: none;
-    transition: border 0.2s;
 }
 
-.formulaire input:focus {
+.form-box input:focus,
+.form-box select:focus {
     border-color: #4299e1;
 }
 
-/* Sélecteur de matière */
+/* Sélecteur de matière principal */
 .select-matiere {
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -256,42 +253,8 @@ h1 {
     cursor: pointer;
 }
 
-/* Bloque le zoom et la sélection au tap rapide */
-button,
-.carte {
+button, .carte {
     touch-action: manipulation;
     -webkit-user-select: none;
     user-select: none;
-}
-
-/* Barre de progression */
-.progress-container {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto 15px auto;
-    text-align: center;
-}
-
-#compteur-cartes {
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #555;
-    margin-bottom: 5px;
-    display: block;
-}
-
-.barre-fond {
-    width: 100%;
-    height: 8px;
-    background-color: #e0e0e0;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.barre-remplissage {
-    height: 100%;
-    width: 0%;
-    background-color: #4CAF50;
-    /* Tu peux changer la couleur selon ton thème */
-    transition: width 0.3s ease;
 }
