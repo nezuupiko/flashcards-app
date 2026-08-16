@@ -74,6 +74,7 @@ function afficherCarte() {
         questionEl.textContent = "Aucune carte dans cette matière.";
         reponseEl.textContent = "";
         compteurEl.textContent = "0 / 0";
+        mettreAJourProgression();
         return;
     }
 
@@ -82,6 +83,25 @@ function afficherCarte() {
     questionEl.textContent = carte.question;
     reponseEl.textContent = carte.reponse;
     compteurEl.textContent = `Carte ${indexActuel + 1} / ${cartesFiltrees.length}`;
+    mettreAJourProgression();
+}
+
+function mettreAJourProgression() {
+    const total = cartesFiltrees.length;
+    const compteurEl = document.getElementById('compteur-cartes');
+    const barreEl = document.getElementById('barre-progression');
+
+    if (total === 0) {
+        if (compteurEl) compteurEl.textContent = "0 / 0";
+        if (barreEl) barreEl.style.width = "0%";
+        return;
+    }
+
+    const actuel = indexActuel + 1;
+    const pourcentage = (actuel / total) * 100;
+
+    if (compteurEl) compteurEl.textContent = `${actuel} / ${total}`;
+    if (barreEl) barreEl.style.width = `${pourcentage}%`;
 }
 
 // Changement fluide sans aperçu de la réponse suivante
@@ -196,3 +216,56 @@ document.body.style.backgroundSize = '300% 300%';
 // Initialisation au chargement
 mettreAJourMenuMatieres();
 filtrerCartes();
+
+// Contrôles au clavier
+document.addEventListener('keydown', (e) => {
+    // Si l'utilisateur tape dans une zone de texte, on n'active pas les raccourcis
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+    if (e.code === 'Space') {
+        e.preventDefault(); // Évite de faire défiler la page vers le bas
+        carteEl.click(); // Simule un clic sur la carte pour la retourner
+    } else if (e.code === 'ArrowRight') {
+        if (btnSuivant) btnSuivant.click();
+    } else if (e.code === 'ArrowLeft') {
+        if (btnPrecedent) btnPrecedent.click();
+    }
+});
+
+
+// Contrôles au clavier
+document.addEventListener('keydown', (e) => {
+    // Si l'utilisateur tape dans une zone de texte, on n'active pas les raccourcis
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+    if (e.code === 'Space') {
+        e.preventDefault(); // Évite de faire défiler la page vers le bas
+        carteEl.click(); // Simule un clic sur la carte pour la retourner
+    } else if (e.code === 'ArrowRight') {
+        if (btnSuivant) btnSuivant.click();
+    } else if (e.code === 'ArrowLeft') {
+        if (btnPrecedent) btnPrecedent.click();
+    }
+});
+
+// Gestes SWIPE mobile
+let touchStartX = 0;
+let touchEndX = 0;
+
+carteEl.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+carteEl.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    
+    const seuil = 50;
+    const difference = touchStartX - touchEndX;
+
+    if (difference > seuil) {
+        if (btnSuivant) btnSuivant.click();
+    } else if (difference < -seuil) {
+        if (btnPrecedent) btnPrecedent.click();
+    }
+}, { passive: true });
+
