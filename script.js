@@ -234,19 +234,24 @@ document.addEventListener('keydown', (e) => {
 
 
 // Contrôles au clavier
+// Contrôles au clavier corrigés
 document.addEventListener('keydown', (e) => {
-    // Si l'utilisateur tape dans une zone de texte, on n'active pas les raccourcis
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    // Ne rien faire si l'utilisateur écrit dans un champ texte
+    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
 
     if (e.code === 'Space') {
-        e.preventDefault(); // Évite de faire défiler la page vers le bas
-        carteEl.click(); // Simule un clic sur la carte pour la retourner
+        e.preventDefault(); // Bloque le défilement de la page
+        // Retourne la carte
+        carteEl.classList.toggle('retournee');
     } else if (e.code === 'ArrowRight') {
+        e.preventDefault(); // Empêche le double saut
         if (btnSuivant) btnSuivant.click();
     } else if (e.code === 'ArrowLeft') {
+        e.preventDefault(); // Empêche le double saut
         if (btnPrecedent) btnPrecedent.click();
     }
 });
+
 
 // Gestes SWIPE mobile
 let touchStartX = 0;
@@ -268,4 +273,25 @@ carteEl.addEventListener('touchend', (e) => {
         if (btnPrecedent) btnPrecedent.click();
     }
 }, { passive: true });
+
+const formMatiere = document.getElementById('form-matiere');
+const inputMatiere = document.getElementById('nom-nouvelle-matiere');
+const selectMatiere = document.getElementById('select-matiere-carte');
+
+formMatiere.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nomMatiere = inputMatiere.value.trim();
+    
+    if (nomMatiere) {
+        // Ajouter la nouvelle option dans le select
+        const option = document.createElement('option');
+        option.value = nomMatiere;
+        option.textContent = nomMatiere;
+        selectMatiere.appendChild(option);
+        
+        // Sélectionner directement la nouvelle matière créée
+        selectMatiere.value = nomMatiere;
+        inputMatiere.value = '';
+    }
+});
 
