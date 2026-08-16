@@ -97,7 +97,7 @@ function changerDeCarte(nouvelIndex) {
         setTimeout(() => {
             indexActuel = nouvelIndex;
             afficherCarte();
-        }, 150); // 👈 Ajuste ce chiffre selon la vitesse de ton animation CSS
+        }, 175); // 👈 Ajuste ce chiffre selon la vitesse de ton animation CSS
         
     } else {
         // Si elle était déjà du côté question, changement instantané
