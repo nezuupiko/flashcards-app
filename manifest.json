@@ -12,4 +12,5 @@
   "background_color": "#ffffff",
   "theme_color": "#4299e1",
   "display": "standalone"
+  "src": "icon.png?v=2"
 }
