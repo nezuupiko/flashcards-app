@@ -20,9 +20,17 @@ body {
 }
 
 @keyframes animerBackground {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .app-container {
@@ -177,84 +185,91 @@ h1 {
     transform: translateY(0);
 }
 
-.btn-primaire { background: #4299e1; color: white; }
-.btn-secondaire { background: #ffffff; color: #4a5568; }
-.btn-danger { background: #fed7d7; color: #c53030; flex: 0.6; }
-.btn-succes { background: #48bb78; color: white; width: 100%; }
+.btn-primaire {
+    background: #4299e1;
+    color: white;
+}
 
-/* --- FORMULAIRES --- */
+.btn-secondaire {
+    background: #ffffff;
+    color: #4a5568;
+}
+
+.btn-danger {
+    background: #fed7d7;
+    color: #c53030;
+    flex: 0.6;
+}
+
+.btn-succes {
+    background: #48bb78;
+    color: white;
+    width: 100%;
+}
+
+/* --- FORMULAIRES CORRIGÉS POUR IOS --- */
 .formulaires-container {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    margin-top: 10px;
+    gap: 20px;
+    margin-top: 15px;
 }
 
 .form-box {
-    background: white;
+    background: #ffffff;
     padding: 20px;
     border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    /* Force les éléments les uns sous les autres */
+    gap: 12px;
+    width: 100%;
 }
 
 .form-box h3 {
-    font-size: 1rem;
-    color: #4a5568;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 4px;
+}
+
+/* On force TOUS les champs et boutons à prendre 100% de la largeur */
+.form-box input,
+.form-box select,
+.form-box button {
+    width: 100% !important;
+    display: block;
+    -webkit-appearance: none;
+    /* Supprime le style par défaut d'iOS */
+    appearance: none;
 }
 
 .form-box input,
 .form-box select {
-    width: 100%;
-    padding: 12px;
+    padding: 12px 15px;
     border: 1px solid #e2e8f0;
-    border-radius: 10px;
+    border-radius: 12px;
     font-family: 'Poppins', sans-serif;
     font-size: 0.9rem;
+    background-color: #f8fafc;
+    color: #2d3748;
     outline: none;
+    transition: border-color 0.2s, background-color 0.2s;
 }
 
 .form-box input:focus,
 .form-box select:focus {
     border-color: #4299e1;
+    background-color: #ffffff;
 }
 
-/* Sélecteur de matière principal */
-.select-matiere {
-    width: 100%;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: white;
-    padding: 8px 15px;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-
-.select-matiere label {
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: #4a5568;
-}
-
-.select-matiere select {
-    flex: 1;
-    border: none;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    font-size: 0.9rem;
-    color: #2d3748;
-    outline: none;
-    background: transparent;
-    cursor: pointer;
-}
-
-button, .carte {
-    touch-action: manipulation;
-    -webkit-user-select: none;
-    user-select: none;
+/* Petite flèche personnalisée pour le menu déroulant sur iOS */
+.form-box select {
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%234A5568' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+    padding-right: 35px;
 }
